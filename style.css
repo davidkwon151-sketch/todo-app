@@ -30,8 +30,10 @@ h1 { margin: 0; font-size: 34px; }
 
 .todo-form { display: flex; gap: 8px; }
 .todo-form input,
-.todo-form select {
+.todo-form select,
+.search-field input {
   flex: 1;
+  width: 100%;
   min-width: 0;
   border: 1px solid #d1d5db;
   border-radius: 10px;
@@ -40,7 +42,8 @@ h1 { margin: 0; font-size: 34px; }
 }
 .todo-form select { flex: 0 0 96px; background: white; }
 .todo-form input:focus,
-.todo-form select:focus { outline: 2px solid #202124; outline-offset: 1px; }
+.todo-form select:focus,
+.search-field input:focus { outline: 2px solid #202124; outline-offset: 1px; }
 button { font: inherit; cursor: pointer; }
 .todo-form button {
   border: 0;
@@ -50,6 +53,7 @@ button { font: inherit; cursor: pointer; }
   color: white;
   font-weight: 700;
 }
+.search-field { margin-top: 12px; }
 
 .status-filter {
   display: flex;

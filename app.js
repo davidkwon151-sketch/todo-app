@@ -3,6 +3,7 @@ const STORAGE_KEY = "class-todo-items";
 const form = document.querySelector("#todo-form");
 const input = document.querySelector("#todo-input");
 const priorityInput = document.querySelector("#priority-input");
+const searchInput = document.querySelector("#search-input");
 const list = document.querySelector("#todo-list");
 const remainingCount = document.querySelector("#remaining-count");
 const emptyState = document.querySelector("#empty-state");
@@ -41,8 +42,9 @@ function saveTodos() {
 
 function render() {
   list.innerHTML = "";
-
+  const query = searchInput.value.trim().toLowerCase();
   const visibleTodos = todos.filter((todo) => {
+    if (query && !todo.title.toLowerCase().includes(query)) return false;
     if (currentFilter === "active") return !todo.completed;
     if (currentFilter === "completed") return todo.completed;
     return true;
@@ -115,6 +117,8 @@ form.addEventListener("submit", (event) => {
   priorityInput.value = "medium";
   input.focus();
 });
+
+searchInput.addEventListener("input", render);
 
 filterButtons.forEach((button) => {
   button.addEventListener("click", () => {
