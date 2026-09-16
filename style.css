@@ -29,7 +29,8 @@ h1 { margin: 0; font-size: 34px; }
 .subtitle { margin: 8px 0 0; color: #6b7280; }
 
 .todo-form { display: flex; gap: 8px; }
-.todo-form input {
+.todo-form input,
+.todo-form select {
   flex: 1;
   min-width: 0;
   border: 1px solid #d1d5db;
@@ -37,7 +38,9 @@ h1 { margin: 0; font-size: 34px; }
   padding: 12px 14px;
   font: inherit;
 }
-.todo-form input:focus { outline: 2px solid #202124; outline-offset: 1px; }
+.todo-form select { flex: 0 0 96px; background: white; }
+.todo-form input:focus,
+.todo-form select:focus { outline: 2px solid #202124; outline-offset: 1px; }
 button { font: inherit; cursor: pointer; }
 .todo-form button {
   border: 0;
@@ -60,6 +63,16 @@ button { font: inherit; cursor: pointer; }
 }
 .todo-item .title { flex: 1; overflow-wrap: anywhere; }
 .todo-item.completed .title { color: #9ca3af; text-decoration: line-through; }
+.priority {
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.priority-high { background: #fee2e2; color: #b91c1c; }
+.priority-medium { background: #e0f2fe; color: #0369a1; }
+.priority-low { background: #ecfdf5; color: #047857; }
 .delete-button {
   border: 0;
   background: transparent;
@@ -76,5 +89,6 @@ footer { border-top: 1px solid #eee; margin-top: 24px; padding-top: 18px; color:
 @media (max-width: 480px) {
   .app { padding: 24px 18px; }
   .todo-form { flex-direction: column; }
+  .todo-form select { flex: auto; }
   .todo-form button { padding: 12px; }
 }
