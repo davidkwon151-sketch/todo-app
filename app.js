@@ -6,6 +6,7 @@ const priorityInput = document.querySelector("#priority-input");
 const list = document.querySelector("#todo-list");
 const remainingCount = document.querySelector("#remaining-count");
 const emptyState = document.querySelector("#empty-state");
+const filterButtons = document.querySelectorAll("[data-filter]");
 
 const priorityLabels = {
   high: "높음",
@@ -14,6 +15,7 @@ const priorityLabels = {
 };
 
 let todos = loadTodos();
+let currentFilter = "all";
 
 function loadTodos() {
   try {
@@ -40,7 +42,13 @@ function saveTodos() {
 function render() {
   list.innerHTML = "";
 
-  todos.forEach((todo) => {
+  const visibleTodos = todos.filter((todo) => {
+    if (currentFilter === "active") return !todo.completed;
+    if (currentFilter === "completed") return todo.completed;
+    return true;
+  });
+
+  visibleTodos.forEach((todo) => {
     const item = document.createElement("li");
     item.className = `todo-item${todo.completed ? " completed" : ""}`;
 
@@ -70,7 +78,11 @@ function render() {
 
   const remaining = todos.filter((todo) => !todo.completed).length;
   remainingCount.textContent = `${remaining}개의 할 일 남음`;
-  emptyState.hidden = todos.length > 0;
+  emptyState.hidden = visibleTodos.length > 0;
+
+  filterButtons.forEach((button) => {
+    button.classList.toggle("active", button.dataset.filter === currentFilter);
+  });
 }
 
 function addTodo(title, priority) {
@@ -102,6 +114,13 @@ form.addEventListener("submit", (event) => {
   input.value = "";
   priorityInput.value = "medium";
   input.focus();
+});
+
+filterButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    currentFilter = button.dataset.filter;
+    render();
+  });
 });
 
 render();

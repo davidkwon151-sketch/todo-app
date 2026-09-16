@@ -26,6 +26,12 @@
       <button type="submit">추가</button>
     </form>
 
+    <div class="status-filter" aria-label="완료 상태 필터">
+      <button type="button" class="active" data-filter="all">전체</button>
+      <button type="button" data-filter="active">진행 중</button>
+      <button type="button" data-filter="completed">완료</button>
+    </div>
+
     <section class="todo-section" aria-label="할 일 목록">
       <ul id="todo-list" class="todo-list"></ul>
       <div id="empty-state" class="empty-state">아직 할 일이 없어요.</div>
