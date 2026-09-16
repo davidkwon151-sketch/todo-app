@@ -2,23 +2,35 @@ const STORAGE_KEY = "class-todo-items";
 
 const form = document.querySelector("#todo-form");
 const input = document.querySelector("#todo-input");
+const priorityInput = document.querySelector("#priority-input");
 const list = document.querySelector("#todo-list");
 const remainingCount = document.querySelector("#remaining-count");
 const emptyState = document.querySelector("#empty-state");
+
+const priorityLabels = {
+  high: "높음",
+  medium: "보통",
+  low: "낮음",
+};
 
 let todos = loadTodos();
 
 function loadTodos() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (Array.isArray(saved)) return saved;
+    if (Array.isArray(saved)) return saved.map(normalizeTodo);
   } catch (_) {}
 
   return [
-    { id: crypto.randomUUID(), title: "강의 자료 만들기", completed: false },
-    { id: crypto.randomUUID(), title: "이메일 답장하기", completed: true },
-    { id: crypto.randomUUID(), title: "운동하기", completed: false },
+    { id: crypto.randomUUID(), title: "강의 자료 만들기", completed: false, priority: "high" },
+    { id: crypto.randomUUID(), title: "이메일 답장하기", completed: true, priority: "medium" },
+    { id: crypto.randomUUID(), title: "운동하기", completed: false, priority: "low" },
   ];
+}
+
+function normalizeTodo(todo) {
+  const priority = priorityLabels[todo.priority] ? todo.priority : "medium";
+  return { ...todo, priority };
 }
 
 function saveTodos() {
@@ -42,13 +54,17 @@ function render() {
     title.className = "title";
     title.textContent = todo.title;
 
+    const priority = document.createElement("span");
+    priority.className = `priority priority-${todo.priority}`;
+    priority.textContent = priorityLabels[todo.priority];
+
     const deleteButton = document.createElement("button");
     deleteButton.type = "button";
     deleteButton.className = "delete-button";
     deleteButton.textContent = "삭제";
     deleteButton.addEventListener("click", () => deleteTodo(todo.id));
 
-    item.append(checkbox, title, deleteButton);
+    item.append(checkbox, title, priority, deleteButton);
     list.appendChild(item);
   });
 
@@ -57,8 +73,8 @@ function render() {
   emptyState.hidden = todos.length > 0;
 }
 
-function addTodo(title) {
-  todos.unshift({ id: crypto.randomUUID(), title, completed: false });
+function addTodo(title, priority) {
+  todos.unshift({ id: crypto.randomUUID(), title, completed: false, priority });
   saveTodos();
   render();
 }
@@ -82,8 +98,9 @@ form.addEventListener("submit", (event) => {
   const title = input.value.trim();
   if (!title) return;
 
-  addTodo(title);
+  addTodo(title, priorityInput.value);
   input.value = "";
+  priorityInput.value = "medium";
   input.focus();
 });
 
